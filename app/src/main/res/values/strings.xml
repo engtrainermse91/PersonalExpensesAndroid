@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Personal Expenses App</string>
+    <string name="enter_user_name">Enter User Name</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="confirm_password">Confirm Password..</string>
+    <string name="select_date">Select Date</string>
+    <string name="mobile">Mobile no</string>
+    <string name="enter_place">Enter Place</string>
+    <string name="enter_date">Enter Date</string>
+    <string name="enter_money">Enter money</string>
+    <string name="save_expenses">SAVE EXPENSES</string>
+    <string name="confirm_text">Confirm Delete</string>
+    <string name="dialog_msg">Are you sure that you want to delete?</string>
+    <string name="expenses">Expenses Management</string>
+    <string name="setting">Settings</string>
+    <string name="profile">Profile</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="notification">Notification</string>
+    <string name="language">Language</string>
+    <string name="save_settings">Save Settings</string>
+    <string name="english">English</string>
+    <string name="arabic">Arabic</string>
+    <string name="required">Required!</string>
+    <string name="no_expenses_added_yet">No Expenses Added Yet!</string>
+    <string name="address">Email address</string>
+</resources>

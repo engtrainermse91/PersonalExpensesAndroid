@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    android:orientation="vertical"
+    android:padding="16dp"
+    app:behavior_hideable="false"
+    app:behavior_peekHeight="90dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <EditText
+        android:id="@+id/enterPlace"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/enter_place"
+        android:inputType="text"
+        android:drawableStart="@drawable/ic_baseline_place_24"
+        android:drawablePadding="10dp"
+        android:background="@drawable/rounded_textfiled_gray"
+        android:layout_marginTop="8dp"/>
+
+    <EditText
+        android:id="@+id/dateEt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/enter_date"
+        android:inputType="date"
+        android:drawableStart="@drawable/ic_baseline_date_range_24"
+        android:drawablePadding="10dp"
+        android:background="@drawable/rounded_textfiled_gray"
+        android:layout_marginTop="8dp"/>
+
+
+    <EditText
+        android:id="@+id/amountEt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/enter_money"
+        android:inputType="number"
+        android:drawableStart="@drawable/ic_baseline_attach_money_24"
+        android:drawablePadding="10dp"
+        android:background="@drawable/rounded_textfiled_gray"
+        android:layout_marginTop="8dp"/>
+
+    <android.widget.Button
+        android:id="@+id/saveBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_button_blue"
+        android:text="@string/save_expenses"
+        android:textColor="#fff" />
+
+</LinearLayout>
