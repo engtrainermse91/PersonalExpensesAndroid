@@ -30,6 +30,7 @@ class ExpensesActivity : AppCompatActivity() {
                     adapter.notifyDataSetChanged()
                     checkEmptyStatus()
                     Toast.makeText(this@ExpensesActivity,"Test ",Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@ExpensesActivity,"Test ",Toast.LENGTH_LONG).show()
                 }
             })
             bottomSheetFragment.show(supportFragmentManager,bottomSheetFragment.tag)
