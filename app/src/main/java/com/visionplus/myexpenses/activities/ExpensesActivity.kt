@@ -2,6 +2,7 @@ package com.visionplus.myexpenses.activities
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.visionplus.myexpenses.adapters.ExpensesAdapter
@@ -28,6 +29,7 @@ class ExpensesActivity : AppCompatActivity() {
                     list.add(expenses)
                     adapter.notifyDataSetChanged()
                     checkEmptyStatus()
+                    Toast.makeText(this@ExpensesActivity,"Test ",Toast.LENGTH_LONG).show()
                 }
             })
             bottomSheetFragment.show(supportFragmentManager,bottomSheetFragment.tag)
