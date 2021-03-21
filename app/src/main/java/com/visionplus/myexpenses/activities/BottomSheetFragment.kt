@@ -47,7 +47,7 @@ class BottomSheetFragment(expensesListener:onExpensesListener) : BottomSheetDial
                 else -> {
                     val e = Expenses()
                     e.date = date1
-                    e.money = amount.toDouble()
+                    e.money = amount
                     e.place = placeSt
                     expensesListener.onExpensesAdded(e)
                     dismiss()

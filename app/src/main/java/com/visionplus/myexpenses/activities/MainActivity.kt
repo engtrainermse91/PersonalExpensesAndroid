@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.SharedMemory
 import android.view.View
 import android.widget.Toast
+import com.google.gson.Gson
 import com.visionplus.myexpenses.R
 import com.visionplus.myexpenses.api.ApiClient
 import com.visionplus.myexpenses.api.ApiInterface
@@ -64,9 +65,14 @@ class MainActivity : AppCompatActivity() {
                         finish()
                         val  regIntent=Intent(this@MainActivity,ExpensesActivity::class.java)
                         startActivity(regIntent)
+
+                        val gson = Gson()
+                        val userObject = gson.toJson(body.data)
+
                         val edit = sharedPreferences.edit()
                         edit.putString("USER_NAME",binding.userNameEt.text.toString())
                         edit.putString("PASSWORD",binding.userPassword.text.toString())
+                        edit.putString("USER",userObject)
                         edit.apply()
 
                     } else {

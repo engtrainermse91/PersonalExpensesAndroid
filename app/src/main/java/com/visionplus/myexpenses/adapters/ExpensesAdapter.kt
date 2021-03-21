@@ -12,9 +12,9 @@ import com.visionplus.myexpenses.models.Expenses
 import java.lang.String
 import java.util.*
 
-class ExpensesAdapter(private val context: Context, arrayList: ArrayList<Expenses>) :
+class ExpensesAdapter(private val context: Context, arrayList: List<Expenses>) :
     RecyclerView.Adapter<ExpensesAdapter.ExpensesViewHolder>() {
-    private val arrayList: ArrayList<Expenses>
+    private val arrayList: List<Expenses>
     private var isOpen = false
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExpensesViewHolder {
         val v: View = LayoutInflater.from(context).inflate(R.layout.rv_expenses_row, parent, false)
@@ -36,7 +36,7 @@ class ExpensesAdapter(private val context: Context, arrayList: ArrayList<Expense
                 AlertDialog.BUTTON_POSITIVE,
                 "Yes"
             ) { dialogInterface, i ->
-                arrayList.removeAt(position)
+                //arrayList.removeAt(position)
                 notifyDataSetChanged()
             }
             alertDialog.setButton(
