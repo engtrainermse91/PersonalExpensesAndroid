@@ -34,7 +34,7 @@ class ExpensesActivity : AppCompatActivity() {
         val lm = LinearLayoutManager(this)
         binding.recyclerExpenses.layoutManager = lm
         binding.progressDialog.visibility = View.VISIBLE
-        getAllExpenses("")
+       // getAllExpenses("")
         binding.floatingAddBtn.setOnClickListener {
             val bottomSheetFragment = BottomSheetFragment(object : BottomSheetFragment.onExpensesListener {
                 override fun onExpensesAdded(expenses: Expenses) {
