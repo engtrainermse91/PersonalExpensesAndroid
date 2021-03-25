@@ -10,7 +10,7 @@ class User {
 
     @SerializedName("username")
     @Expose
-    var username: String? = null
+    var userName: String? = null
 
     @SerializedName("password")
     @Expose

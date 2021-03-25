@@ -1,22 +1,27 @@
 package com.visionplus.myexpenses.activities
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.Gson
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.visionplus.myexpenses.Common.Common
+import com.visionplus.myexpenses.R
 import com.visionplus.myexpenses.adapters.ExpensesAdapter
+import com.visionplus.myexpenses.adapters.ExpensesViewHolder
 import com.visionplus.myexpenses.api.ApiClient
 import com.visionplus.myexpenses.api.ApiInterface
 import com.visionplus.myexpenses.api.response.CommonResponse
 import com.visionplus.myexpenses.api.response.ExpensesResponse
 import com.visionplus.myexpenses.databinding.ActivityExpensesBinding
 import com.visionplus.myexpenses.models.Expenses
-import com.visionplus.myexpenses.models.User
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,6 +30,8 @@ import retrofit2.Response
 class ExpensesActivity : AppCompatActivity() {
     private lateinit var binding: ActivityExpensesBinding
     private lateinit var adapter: ExpensesAdapter
+    private  var adapterFireStore:FirestoreRecyclerAdapter<Expenses, ExpensesViewHolder>? = null
+    var db = FirebaseFirestore.getInstance()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityExpensesBinding.inflate(layoutInflater)
@@ -33,20 +40,24 @@ class ExpensesActivity : AppCompatActivity() {
 
         val lm = LinearLayoutManager(this)
         binding.recyclerExpenses.layoutManager = lm
-        binding.progressDialog.visibility = View.VISIBLE
+
+  //      binding.progressDialog.visibility = View.VISIBLE
        // getAllExpenses("")
+        getExpensesFireStore()
         binding.floatingAddBtn.setOnClickListener {
             val bottomSheetFragment = BottomSheetFragment(object : BottomSheetFragment.onExpensesListener {
                 override fun onExpensesAdded(expenses: Expenses) {
                     binding.progressDialog.visibility = View.VISIBLE
-                    addExpesessApi(expenses)
+                    // addExpesessApi(expenses)
+                    addExpensesFirebase(expenses)
+
                 }
             })
             bottomSheetFragment.show(supportFragmentManager, bottomSheetFragment.tag)
         }
     }
 
-    private fun checkEmptyStatus(list:List<Expenses>) {
+    private fun checkEmptyStatus(list: List<Expenses>) {
         if (list.isEmpty()) {
             binding.linearEmptyStatus.visibility = View.VISIBLE
             binding.recyclerExpenses.visibility = View.GONE
@@ -59,7 +70,7 @@ class ExpensesActivity : AppCompatActivity() {
     private fun addExpesessApi(e: Expenses) {
         val comm = Common(this)
         val service: ApiInterface = ApiClient().retrofitInstance!!.create(ApiInterface::class.java)
-        Log.d("EXPENSES_DATA","${e.place!!} ${e.date!!} ${e.money}  ${comm.getUser()!!.id!!}")
+        Log.d("EXPENSES_DATA", "${e.place!!} ${e.date!!} ${e.money}  ${comm.getUser()!!.id!!}")
         val call = service.addExpenses(e.place!!, e.date!!, e.money.toString(), comm.getUser()!!.id!!)
         call.enqueue(object : Callback<CommonResponse> {
             override fun onResponse(
@@ -91,10 +102,10 @@ class ExpensesActivity : AppCompatActivity() {
         })
     }
 
-    private fun getAllExpenses(payDate:String){
+    private fun getAllExpenses(payDate: String){
         val comm = Common(this)
         val service: ApiInterface = ApiClient().retrofitInstance!!.create(ApiInterface::class.java)
-        val call = service.getAllExpenses(comm.getUser()!!.id!!,payDate)
+        val call = service.getAllExpenses(comm.getUser()!!.id!!, payDate)
         call.enqueue(object : Callback<ExpensesResponse> {
 
             override fun onResponse(
@@ -121,5 +132,79 @@ class ExpensesActivity : AppCompatActivity() {
                         .show()
             }
         })
+    }
+
+
+    /****************************************************************/
+    private fun addExpensesFirebase(e: Expenses) {
+        val comm = Common(this@ExpensesActivity)
+        Log.d("EXPENSES_DATA", "${comm.getUser()!!.userName!!}")
+        // Create a new user with a first and last name
+        // Create a new user with a first and last name
+        val expenses: MutableMap<String, Any> = HashMap()
+        expenses["place"] = e.place!!
+        expenses["date"] = e.date!!
+        expenses["money"] = e.money!!
+        expenses["userName"] = comm.getUser()!!.userName!!
+
+// Add a new document with a generated ID
+
+// Add a new document with a generated ID
+        db.collection("Expenses")
+                .add(expenses)
+                .addOnSuccessListener { documentReference ->
+                    binding.progressDialog.visibility = View.GONE
+                    Toast.makeText(
+                            this,
+                            "DocumentSnapshot added with ID: " + documentReference.id,
+                            Toast.LENGTH_SHORT
+                    ).show()
+                }
+                .addOnFailureListener { e ->
+                    binding.progressDialog.visibility = View.GONE
+                    Toast.makeText(this, "Error adding document", Toast.LENGTH_SHORT).show()
+                }
+    }
+
+    private fun getExpensesFireStore(){
+        val comm = Common(this@ExpensesActivity)
+        val query: Query = FirebaseFirestore.getInstance()
+                .collection("Expenses")
+                .whereEqualTo("userName",comm.getUser()!!.userName!!)
+                .orderBy("place")
+
+        val options: FirestoreRecyclerOptions<Expenses> = FirestoreRecyclerOptions.Builder<Expenses>()
+                .setQuery(query, Expenses::class.java)
+                .build()
+
+         adapterFireStore =object: FirestoreRecyclerAdapter<Expenses, ExpensesViewHolder>(options){
+            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExpensesViewHolder {
+                val view = LayoutInflater.from(parent.context)
+                        .inflate(R.layout.rv_expenses_row, parent, false)
+                return ExpensesViewHolder(view)
+            }
+
+            override fun onBindViewHolder(holder: ExpensesViewHolder, position: Int, model: Expenses) {
+               holder.place.text = model.place
+               holder.date.text = model.date
+               holder.money.text = model.money
+            }
+
+        }
+        binding.recyclerExpenses.adapter = adapterFireStore
+        adapterFireStore!!.startListening()
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if(adapterFireStore!=null)
+        adapterFireStore!!.startListening()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if(adapterFireStore!=null)
+            adapterFireStore!!.stopListening()
     }
 }

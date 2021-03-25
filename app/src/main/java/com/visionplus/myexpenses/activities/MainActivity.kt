@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+//        throw RuntimeException("Test Crash") // Force a crash
         sharedPreferences = getSharedPreferences("SETTING_PREF", MODE_PRIVATE)
         readData()
         binding.loginBtn.setOnClickListener {
@@ -49,7 +50,6 @@ class MainActivity : AppCompatActivity() {
         binding.userNameEt.setText(sharedPreferences.getString("USER_NAME", null))
         binding.userPassword.setText(sharedPreferences.getString("PASSWORD", null))
     }
-
 
     private fun loginApi(){
         val userName =binding.userNameEt.text.toString()

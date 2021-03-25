@@ -13,6 +13,8 @@ class Expenses {
     @Expose
     var uid: String? = null
 
+    var userName: String? = null // for firebase only
+
     @SerializedName("place_txt")
     @Expose
     var place: String? = null
