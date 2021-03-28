@@ -7,10 +7,12 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.gson.Gson
+import com.visionplus.myexpenses.R
 import com.visionplus.myexpenses.api.ApiClient
 import com.visionplus.myexpenses.api.ApiInterface
 import com.visionplus.myexpenses.api.response.LoginResponse
@@ -35,14 +37,21 @@ class MainActivity : AppCompatActivity() {
         readData()
         binding.loginBtn.setOnClickListener {
             binding.progressDialog.visibility = View.VISIBLE
-           // loginApi()
-            loginFirebaseFireStore()
+            loginApi()
+           // loginFirebaseFireStore()
         }
 
         binding.registerBtn.setOnClickListener {
             val  regIntent=Intent(this, RegistrationActivity::class.java)
             startActivity(regIntent)
         }
+
+        Glide
+            .with(this)
+            .load("https://cdn.iconscout.com/icon/premium/png-512-thumb/expense-502048.png")
+            .centerCrop()
+            .placeholder(android.R.color.darker_gray)
+            .into(binding.image)
     }
 
 

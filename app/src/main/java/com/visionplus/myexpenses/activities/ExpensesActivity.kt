@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestore
@@ -27,7 +28,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class ExpensesActivity : AppCompatActivity() {
+class ExpensesActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
     private lateinit var binding: ActivityExpensesBinding
     private lateinit var adapter: ExpensesAdapter
     private  var adapterFireStore:FirestoreRecyclerAdapter<Expenses, ExpensesViewHolder>? = null
@@ -37,19 +38,19 @@ class ExpensesActivity : AppCompatActivity() {
         binding = ActivityExpensesBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-
+        binding.swipeToRefreash.setOnRefreshListener(this)
         val lm = LinearLayoutManager(this)
         binding.recyclerExpenses.layoutManager = lm
 
   //      binding.progressDialog.visibility = View.VISIBLE
-       // getAllExpenses("")
-        getExpensesFireStore()
+        getAllExpenses("")
+       // getExpensesFireStore()
         binding.floatingAddBtn.setOnClickListener {
             val bottomSheetFragment = BottomSheetFragment(object : BottomSheetFragment.onExpensesListener {
                 override fun onExpensesAdded(expenses: Expenses) {
                     binding.progressDialog.visibility = View.VISIBLE
-                    // addExpesessApi(expenses)
-                    addExpensesFirebase(expenses)
+                     addExpesessApi(expenses)
+                    //addExpensesFirebase(expenses)
 
                 }
             })
@@ -113,6 +114,7 @@ class ExpensesActivity : AppCompatActivity() {
                     response: Response<ExpensesResponse>
             ) {
                 binding.progressDialog.visibility = View.GONE
+                binding.swipeToRefreash.isRefreshing=false
                 if (response.code() == 200) {
                     val body = response.body()
                     if (body!!.oper!!) {
@@ -206,5 +208,10 @@ class ExpensesActivity : AppCompatActivity() {
         super.onStop()
         if(adapterFireStore!=null)
             adapterFireStore!!.stopListening()
+    }
+
+    override fun onRefresh() {
+        getAllExpenses("")
+
     }
 }
