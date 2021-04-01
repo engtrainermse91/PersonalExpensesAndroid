@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.akexorcist.localizationactivity.ui.LocalizationActivity
 import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.firestore.FirebaseFirestore
@@ -23,7 +24,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : LocalizationActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var sharedPreferences: SharedPreferences
     var db = FirebaseFirestore.getInstance()
@@ -32,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+        setLanguage("ar")
 //        throw RuntimeException("Test Crash") // Force a crash
         sharedPreferences = getSharedPreferences("SETTING_PREF", MODE_PRIVATE)
         readData()
@@ -44,6 +46,7 @@ class MainActivity : AppCompatActivity() {
         binding.registerBtn.setOnClickListener {
             val  regIntent=Intent(this, RegistrationActivity::class.java)
             startActivity(regIntent)
+            overridePendingTransition(R.anim.bounce, R.anim.fade_in);
         }
 
         Glide

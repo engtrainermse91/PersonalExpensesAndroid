@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.akexorcist.localizationactivity.ui.LocalizationActivity
 import com.google.firebase.firestore.FirebaseFirestore
 import com.visionplus.myexpenses.api.ApiClient
 import com.visionplus.myexpenses.api.ApiInterface
@@ -14,7 +15,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class RegistrationActivity : AppCompatActivity() {
+class RegistrationActivity : LocalizationActivity() {
     private lateinit var binding: ActivityRegistrationBinding
     var db = FirebaseFirestore.getInstance()
     override fun onCreate(savedInstanceState: Bundle?) {

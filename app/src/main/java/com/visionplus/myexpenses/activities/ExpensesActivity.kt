@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.akexorcist.localizationactivity.ui.LocalizationActivity
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestore
@@ -28,7 +29,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class ExpensesActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
+class ExpensesActivity : LocalizationActivity(), SwipeRefreshLayout.OnRefreshListener {
     private lateinit var binding: ActivityExpensesBinding
     private lateinit var adapter: ExpensesAdapter
     private  var adapterFireStore:FirestoreRecyclerAdapter<Expenses, ExpensesViewHolder>? = null
